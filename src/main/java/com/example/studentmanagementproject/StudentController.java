@@ -26,4 +26,30 @@ public class StudentController {
 //        }
         return studentsDb.get(admNo) + message;
     }
+
+    @DeleteMapping("/delete")
+    public String deleteStudent(@RequestParam("id") int admNo){
+        studentsDb.remove(admNo);
+        return "Student deleted successfully";
+    }
+
+    @PutMapping("/update_course")
+    public Student updateCourse(@RequestParam("id") int admNo,@RequestParam("course") String newCourse){
+        if(!studentsDb.containsKey(admNo)){
+            throw new RuntimeException("Student doesn't exist");
+        }
+        Student student = studentsDb.get(admNo);
+        student.setCourse(newCourse);
+        return student;
+    }
+    @GetMapping("/get_total_students")
+    public int getTotalStudent(){
+        int total = 0;
+        for(int admNo: studentsDb.keySet()){
+            if(studentsDb.get(admNo).getAge()>25){
+                total++;
+            }
+        }
+        return total;
+    }
 }
